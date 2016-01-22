@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Pronounceable_Password_Test.Fran;
 using Pronounceable_Password_Test.JoelTheCoder;
 using Zaretto.PasswordGenerator;
 
@@ -34,6 +35,35 @@ namespace Pronounceable_Password_Test
                i => Creator.Generate(i),
                "ReadablePasswordGenerator",
                "https://www.nuget.org/packages/ReadablePasswordGenerator/");
+
+            TestFransPhrases();
+
+
+        }
+
+        private static void TestFransPhrases()
+        {
+            Console.WriteLine("Frans Phrases");
+            var wordGenerator = new WordGenerator("words.txt");
+            for (int i = 0; i < 20; i++)
+            {
+                Console.WriteLine(wordGenerator.GeneratePhrase(3, "-"));
+            }
+
+            var setSize = 100000;
+            var passwords = new List<string>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for (int i = 0; i < setSize; i++)
+            {
+                passwords.Add(wordGenerator.GeneratePhrase(3, "-"));
+            }
+            stopwatch.Stop();
+            var totalUnique = passwords.Distinct().Count();
+            Console.WriteLine($"{totalUnique} unique passwords 3 words long were generated in a set of {setSize}.");
+            Console.WriteLine($"{stopwatch.Elapsed.TotalSeconds} to generate {setSize} passwords");
+            Console.WriteLine();
+            Console.WriteLine("-----------------------------------------------------------");
 
             Console.WriteLine("Press any key to close.");
             Console.ReadKey();
@@ -82,5 +112,6 @@ namespace Pronounceable_Password_Test
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------");
         }
+        
     }
 }
